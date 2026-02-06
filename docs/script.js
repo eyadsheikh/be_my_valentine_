@@ -1,71 +1,43 @@
-const noBtn = document.getElementById('noBtn');
-const yesBtn = document.getElementById('yesBtn');
-const celebrate = document.getElementById('celebrate');
+document.addEventListener("DOMContentLoaded", function () {
+  const yesBtn = document.getElementById("yesBtn");
+  const mainCard = document.querySelector(".card");
+  const celebrateDiv = document.getElementById("celebrate");
+  const buttonsDiv = document.querySelector(".buttons");
 
-// Track how many times we've avoided; increase difficulty slightly
-let attempts = 0;
+  yesBtn.addEventListener("click", function () {
+    // Hide buttons
+    buttonsDiv.style.display = "none";
 
-function moveAwayRandomly() {
-  attempts += 1;
-  // Get parent bounds
-  const parent = noBtn.parentElement; // .buttons
-  const parentRect = parent.getBoundingClientRect();
-  const noRect = noBtn.getBoundingClientRect();
-  const yesRect = yesBtn.getBoundingClientRect();
+    // Show celebration message with lovely text
+    celebrateDiv.innerHTML = "💖 Love you Joudy! 💖<br><span style='font-size:24px;'>You make every day brighter!</span>";
+    celebrateDiv.classList.remove("hidden");
+    celebrateDiv.style.fontSize = "2em";
+    celebrateDiv.style.color = "#d72638";
 
-  // Calculate area where noBtn can move inside parent without overlapping yesBtn
-  const padding = 6; // small padding
-  const maxX = parentRect.width - noRect.width - padding;
-  const maxY = parentRect.height - noRect.height - padding;
+    // Change background color and animate
+    document.body.style.background = "linear-gradient(135deg, #ffe0e9 0%, #ffa8c2 100%)";
+    mainCard.style.boxShadow = "0 0 40px #d72638";
 
-  // On small screens parent may be inline; allow movement by using viewport if needed
-  let newX = Math.random() * maxX;
-  let newY = Math.random() * maxY;
+    // Play a lovely sound
+    let audio = new Audio("love.mp3");
+    audio.play();
 
-  // If parent too small (maxX <= 0), fallback to moving relative to body
-  if (maxX <= 0) {
-    const bodyW = document.body.clientWidth - noRect.width - 20;
-    const bodyH = document.body.clientHeight - noRect.height - 20;
-    newX = Math.random() * Math.max(0, bodyW);
-    newY = Math.random() * Math.max(0, bodyH);
-    noBtn.style.position = 'fixed';
-    noBtn.style.left = `${10 + newX}px`;
-    noBtn.style.top = `${10 + newY}px`;
-  } else {
-    // Use relative positioning inside parent
-    noBtn.style.position = 'relative';
-    noBtn.style.left = `${newX}px`;
-    noBtn.style.top = `${newY}px`;
-  }
+    // Add floating animated hearts
+    for (let i = 0; i < 18; i++) {
+      let heart = document.createElement("div");
+      heart.className = "floating-heart";
+      heart.innerHTML = "&#10084;";
+      heart.style.left = Math.random() * 90 + "%";
+      heart.style.animationDelay = Math.random() * 2 + "s";
+      heart.style.fontSize = Math.random() * 1.5 + 1 + "em";
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 6000);
+    }
 
-  // Slight scale effect
-  noBtn.style.transform = 'scale(1.05)';
-  setTimeout(()=>{ noBtn.style.transform = ''; }, 180);
-}
-
-// When mouse gets near the No button, move it
-noBtn.addEventListener('mouseenter', (e) => {
-  moveAwayRandomly();
+    // Optionally, shake the card a tiny bit for fun
+    mainCard.classList.add("shake");
+    setTimeout(() => {
+      mainCard.classList.remove("shake");
+    }, 1000);
+  });
 });
-
-// Also when trying to click (mousedown), move
-noBtn.addEventListener('mousedown', (e) => {
-  e.preventDefault();
-  moveAwayRandomly();
-});
-
-// If touch device, on touchstart move
-noBtn.addEventListener('touchstart', (e) => {
-  e.preventDefault();
-  moveAwayRandomly();
-});
-
-// Yes click — show celebration
-yesBtn.addEventListener('click', () => {
-  celebrate.classList.remove('hidden');
-  yesBtn.disabled = true;
-  yesBtn.textContent = 'Yay! ❤️';
-});
-
-// Accessibility: allow keyboard selection
-noBtn.addEventListener('focus', () => moveAwayRandomly());
