@@ -39,3 +39,40 @@ p{color:#555;margin-top:0}
 .no{background:#fff;color:var(--accent);border-color:#ffd6de}
 .hidden{display:none}
 #celebrate{margin-top:1rem;font-size:1.05rem}
+
+/* Romantic effect hearts + shake */
+.floating-heart {
+  position: absolute;
+  bottom: 0;
+  color: #d72638;
+  font-size: 2em;
+  opacity: 0.8;
+  pointer-events: none;
+  z-index: 10;
+  animation: floatHeart 6s ease-in forwards;
+}
+@keyframes floatHeart {
+  0% { bottom: 0; opacity: 1; transform: scale(1) rotate(0deg);}
+  55% { opacity: 0.7; transform: scale(1.4) rotate(18deg);
+  }
+  100% { bottom: 90vh; opacity: 0; transform: scale(1.8) rotate(-24deg);
+  }
+}
+
+.shake {
+  animation: shakeCard 0.6s;
+}
+@keyframes shakeCard {
+  0% { transform: translateX(0);
+  }
+  20% { transform: translateX(-6px);
+  }
+  40% { transform: translateX(6px);
+  }
+  60% { transform: translateX(-4px);
+  }
+  80% { transform: translateX(4px);
+  }
+  100% { transform: translateX(0);
+  }
+}
