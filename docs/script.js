@@ -1,9 +1,30 @@
 document.addEventListener("DOMContentLoaded", function () {
   const yesBtn = document.getElementById("yesBtn");
+  const noBtn = document.getElementById("noBtn");
   const mainCard = document.querySelector(".card");
   const celebrateDiv = document.getElementById("celebrate");
   const buttonsDiv = document.querySelector(".buttons");
 
+  // Playful "No" button moves when hovered or clicked
+  function moveNoBtn() {
+    const container = buttonsDiv;
+    const btnWidth = noBtn.offsetWidth;
+    const btnHeight = noBtn.offsetHeight;
+    const containerWidth = container.offsetWidth;
+    const containerHeight = container.offsetHeight;
+    // Random new position
+    let left = Math.random() * (containerWidth - btnWidth);
+    let top = Math.random() * (containerHeight - btnHeight);
+    noBtn.style.position = "absolute";
+    noBtn.style.left = left + "px";
+    noBtn.style.top = top + "px";
+    noBtn.style.transition = "left 0.2s, top 0.2s";
+  }
+
+  noBtn.addEventListener("mouseenter", moveNoBtn);
+  noBtn.addEventListener("click", moveNoBtn);
+
+  // "Yes" button triggers all the lovely stuff!
   yesBtn.addEventListener("click", function () {
     // Hide buttons
     buttonsDiv.style.display = "none";
@@ -18,7 +39,7 @@ document.addEventListener("DOMContentLoaded", function () {
     document.body.style.background = "linear-gradient(135deg, #ffe0e9 0%, #ffa8c2 100%)";
     mainCard.style.boxShadow = "0 0 40px #d72638";
 
-    // Play a lovely sound
+    // Play a lovely sound (add love.mp3 to docs/)
     let audio = new Audio("love.mp3");
     audio.play();
 
